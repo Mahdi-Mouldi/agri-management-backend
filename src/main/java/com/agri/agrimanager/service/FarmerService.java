@@ -22,6 +22,14 @@ public class FarmerService  {
     public List<Farmer> getAllFarmer(){
         return farmerRepository.findAll();
     }
+    public Farmer updateFarmer(Long id, Farmer updatedFarmer){
+        Farmer existFarmer = GetFarmerById(id);
+        existFarmer.setName(updatedFarmer.getName());
+        existFarmer.setEmail(updatedFarmer.getEmail());
+        existFarmer.setPhoneNumber(updatedFarmer.getPhoneNumber());
+        return farmerRepository.save(existFarmer);
+    }
+
     public void deleteFarmer(Long id){
         farmerRepository.deleteById(id);
     }
