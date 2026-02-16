@@ -18,4 +18,8 @@ public class Farmer {
     private String name;
     private String email;
     private String phoneNumber;
+    @ManyToOne
+    @JoinColumn(name= "agent_id")
+
+    private AppUser agent;
 }
