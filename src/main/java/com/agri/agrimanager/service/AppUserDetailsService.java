@@ -27,12 +27,12 @@ public class AppUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé : " + username));
 
         // Convertir le Role enum en GrantedAuthority
-        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + appUser.getRole().name());
 
         return new User(
                 appUser.getUsername(),
                 appUser.getPassword(),
-                Collections.singleton(authority)
+                Collections.emptyList()
+
         );
     }
 }
