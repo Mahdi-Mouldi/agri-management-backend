@@ -40,7 +40,7 @@ public class FarmerController {
     // Récupérer un agriculteur par id
     @GetMapping("/{id}")
     public FarmerDTO getFarmerById(@PathVariable Long id) {
-        Farmer farmer = farmerService.GetFarmerById(id);
+        Farmer farmer = farmerService.getFarmerById(id);
         return FarmerMapper.toDTO(farmer);
     }
 

@@ -22,4 +22,6 @@ public class Farmer {
     @JoinColumn(name= "agent_id")
 
     private AppUser agent;
+
+
 }

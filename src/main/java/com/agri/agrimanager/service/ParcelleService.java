@@ -3,6 +3,7 @@ package com.agri.agrimanager.service;
 import com.agri.agrimanager.entity.Parcelle;
 import com.agri.agrimanager.repository.ParcelleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,13 @@ public class ParcelleService {
 
     public Parcelle getParcelleById(Long id) {
         return parcelleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Farmer not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Parcelle not found with id: " + id));
     }
 
     public List<Parcelle> getAllParcelle() {
-        return parcelleRepository.findAll();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return parcelleRepository.findByFarmerAgentUsername(username);
     }
 
     public Parcelle updateParcelle(Long id, Parcelle updatedParcelle){
@@ -39,5 +42,7 @@ public class ParcelleService {
     public void deleteParcelle(Long id) {
         parcelleRepository.deleteById(id);
     }
-
+    public List<Parcelle> getParcellesByFermeId(Long fermeId) {
+        return parcelleRepository.findByFermeId(fermeId);
+    }
 }
