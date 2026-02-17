@@ -34,6 +34,11 @@ public class Parcelle {
 
     private Farmer farmer;
 
+    @ManyToOne
+    @JoinColumn(name = "ferme_id")
+
+    private Ferme ferme;
+
     @PrePersist
     protected void onCreate() {
         dateCreation = LocalDateTime.now();

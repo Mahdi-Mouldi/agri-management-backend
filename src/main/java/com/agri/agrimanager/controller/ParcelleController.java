@@ -2,9 +2,11 @@ package com.agri.agrimanager.controller;
 
 import com.agri.agrimanager.dto.ParcelleDTO;
 import com.agri.agrimanager.entity.Farmer;
+import com.agri.agrimanager.entity.Ferme;
 import com.agri.agrimanager.entity.Parcelle;
 import com.agri.agrimanager.mapper.ParcelleMapper;
 import com.agri.agrimanager.service.FarmerService;
+import com.agri.agrimanager.service.FermeService;
 import com.agri.agrimanager.service.ParcelleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +23,15 @@ public class ParcelleController {
     private final ParcelleService parcelleService;
     private final ParcelleMapper parcelleMapper;
     private final FarmerService farmerService;
+    private final FermeService fermeService;
 
     @PostMapping
     public ParcelleDTO addParcelle(@RequestBody ParcelleDTO parcelleDTO) {
 
-        Farmer farmer = farmerService.GetFarmerById(parcelleDTO.getFarmerId());
+        Farmer farmer = farmerService.getFarmerById(parcelleDTO.getFarmerId());
+        Ferme ferme = fermeService.getFermeById(parcelleDTO.getFermeId());
 
-        Parcelle parcelle = parcelleMapper.toEntity(parcelleDTO, farmer);
+        Parcelle parcelle = parcelleMapper.toEntity(parcelleDTO, farmer,  ferme);
 
         Parcelle savedParcelle = parcelleService.createParcelle(parcelle);
 
@@ -38,6 +42,14 @@ public class ParcelleController {
     public List<ParcelleDTO> getAllParcellesByFarmerID(@PathVariable Long farmerId) {
 
         return parcelleService.getParcellesByFarmerId(farmerId)
+                .stream()
+                .map(parcelleMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    @GetMapping("/fermes/{fermeId}")
+    public List<ParcelleDTO> getAllParcellesByFermeID(@PathVariable Long fermeId) {
+
+        return parcelleService.getParcellesByFermeId(fermeId)
                 .stream()
                 .map(parcelleMapper::toDTO)
                 .collect(Collectors.toList());
@@ -63,9 +75,10 @@ public class ParcelleController {
     public ParcelleDTO updateParcelle(@PathVariable Long id,
                                       @RequestBody ParcelleDTO parcelleDTO) {
 
-        Farmer farmer = farmerService.GetFarmerById(parcelleDTO.getFarmerId());
+        Farmer farmer = farmerService.getFarmerById(parcelleDTO.getFarmerId());
+        Ferme ferme = fermeService.getFermeById(parcelleDTO.getFermeId());
 
-        Parcelle parcelle = parcelleMapper.toEntity(parcelleDTO, farmer);
+        Parcelle parcelle = parcelleMapper.toEntity(parcelleDTO, farmer, ferme);
 
         Parcelle updatedParcelle = parcelleService.updateParcelle(id, parcelle);
 

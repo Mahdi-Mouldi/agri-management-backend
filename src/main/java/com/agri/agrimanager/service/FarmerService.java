@@ -16,7 +16,9 @@ import java.util.List;
 public class FarmerService  {
     private final FarmerRepository farmerRepository;
     private final AppUserRepository appUserRepository;
-
+    // Récupère le nom d'utilisateur de l'agent actuellement connecté
+// puis cherche cet agent dans la base de données.
+// Si aucun agent n'est trouvé avec ce username, lance une exception.
     public Farmer createFarmer(Farmer farmer){
         String username = SecurityContextHolder.getContext().getAuthentication().getName(); //njib lusername mte3 luser li aaml login
         AppUser agent = appUserRepository.findByUsername(username)
@@ -25,7 +27,7 @@ public class FarmerService  {
         return farmerRepository.save(farmer);
     }
 
-    public Farmer GetFarmerById(Long id){
+    public Farmer getFarmerById(Long id){
       return farmerRepository.findById(id)
               .orElseThrow(() -> new RuntimeException("Farmer not found with id: " + id));
     }
@@ -34,7 +36,7 @@ public class FarmerService  {
         return farmerRepository.findByAgentUsername(username);
     }
     public Farmer updateFarmer(Long id, Farmer updatedFarmer){
-        Farmer existFarmer = GetFarmerById(id);
+        Farmer existFarmer = getFarmerById(id);
         existFarmer.setName(updatedFarmer.getName());
         existFarmer.setEmail(updatedFarmer.getEmail());
         existFarmer.setPhoneNumber(updatedFarmer.getPhoneNumber());

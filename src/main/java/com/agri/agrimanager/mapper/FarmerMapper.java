@@ -3,6 +3,7 @@ package com.agri.agrimanager.mapper;
 import com.agri.agrimanager.entity.Farmer;
 import com.agri.agrimanager.dto.FarmerDTO;
 
+
 public class FarmerMapper {
 
     // Convertir FarmerDTO -> Farmer (pour enregistrer en base)

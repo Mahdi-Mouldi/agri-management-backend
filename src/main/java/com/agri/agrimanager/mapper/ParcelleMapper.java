@@ -2,6 +2,7 @@ package com.agri.agrimanager.mapper;
 
 import com.agri.agrimanager.dto.ParcelleDTO;
 import com.agri.agrimanager.entity.Farmer;
+import com.agri.agrimanager.entity.Ferme;
 import com.agri.agrimanager.entity.Parcelle;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,11 @@ public class ParcelleMapper {
                 .geometryJson(parcelle.getGeometryJson())
                 .syncStatus(parcelle.getSyncStatus())
                 .farmerId(parcelle.getFarmer() != null ? parcelle.getFarmer().getId() : null)
+                .fermeId(parcelle.getFerme() != null ? parcelle.getFerme().getId() : null)
                 .build();
     }
 
-    public Parcelle toEntity(ParcelleDTO dto, Farmer farmer) {
+    public Parcelle toEntity(ParcelleDTO dto, Farmer farmer, Ferme ferme) {
         if (dto == null) return null;
 
         return Parcelle.builder()
@@ -29,6 +31,7 @@ public class ParcelleMapper {
                 .geometryJson(dto.getGeometryJson())
                 .syncStatus(dto.getSyncStatus())
                 .farmer(farmer)
+                .ferme(ferme)
                 .build();
     }
 }
