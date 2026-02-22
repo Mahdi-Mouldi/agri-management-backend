@@ -1,6 +1,5 @@
 package com.agri.agrimanager.dto;
 
-import com.agri.agrimanager.entity.Role;
 import lombok.Data;
 
 @Data
