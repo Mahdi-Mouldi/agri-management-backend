@@ -24,10 +24,13 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
     }
-
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        authService.register(request);
-        return ResponseEntity.ok("Utilisateur créé avec succès");
+        try {
+            authService.register(request);
+            return ResponseEntity.ok("Utilisateur créé avec succès");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(409).body(e.getMessage());
+        }
     }
 }

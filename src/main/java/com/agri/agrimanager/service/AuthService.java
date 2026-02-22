@@ -9,6 +9,8 @@ import com.agri.agrimanager.utils.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
 
@@ -31,8 +33,14 @@ public class AuthService {
         return new LoginResponse(user.getUsername(),token);
     }
     public void register(RegisterRequest request) {
+        Optional<AppUser> existUser = appUserRepository.findByUsername(request.getUsername());
+        if(existUser.isPresent()){
+            throw new RuntimeException("Username already exists");
+        }
         AppUser user = new AppUser();
+
         user.setUsername(request.getUsername());
+
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         appUserRepository.save(user);

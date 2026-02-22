@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
+// hedha lbackend li chyaabtho llfrontend hedha li recupereneh mel sattelite response w hedha chnoua khddhina mnou
 public class NdviImageDTO {
     private Long id;
     private Long parcelleId;
