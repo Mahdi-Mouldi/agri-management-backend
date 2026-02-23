@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface AgromonitoringClient {
     @PostMapping("/polygons")
-    String createPolygon(@RequestBody String geoJson );
+    String createPolygon(@RequestBody String name,String geoJson );
 
     @GetMapping("images/search")
     String serchImage(
