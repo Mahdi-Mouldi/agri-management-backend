@@ -22,6 +22,9 @@ public class Parcelle {
     @Column(columnDefinition = "TEXT")
     private String geometryJson; // GeoJSON format
 
+    @Column(name = "agro_polygon_id")      // ← AJOUTÉ
+    private String agroPolygonId;
+
     private LocalDateTime dateCreation;
 
     private LocalDateTime dateModification;

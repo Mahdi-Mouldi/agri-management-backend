@@ -2,8 +2,6 @@ package com.agri.agrimanager.service;
 
 import com.agri.agrimanager.entity.AppUser;
 import com.agri.agrimanager.repository.AppUserRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
