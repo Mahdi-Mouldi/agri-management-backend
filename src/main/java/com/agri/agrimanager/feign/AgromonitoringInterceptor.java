@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 public class AgromonitoringInterceptor implements RequestInterceptor {
     @Value("${agromonitoring.api.key}")
     private String apiKey;
-
     @Override
-    public void apply(RequestTemplate requestTemplate){
+    public void apply(RequestTemplate requestTemplate) {
         requestTemplate.query("appid", apiKey);
+        requestTemplate.header("Content-Type", "application/json"); // ← ajoute ça
     }
 }
