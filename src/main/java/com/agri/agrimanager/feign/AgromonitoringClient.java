@@ -1,5 +1,6 @@
 package com.agri.agrimanager.feign;
 
+import com.agri.agrimanager.dto.PolygonRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,22 +9,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "agromonitoring",
         configuration = FeignConfig.class,
-        url = "http://api.agromonitoring.com/agro/1.0"
+        url = "${agromonitoring.base.url}"
 )
 public interface AgromonitoringClient {
     @PostMapping("/polygons")
-    String createPolygon(@RequestBody String geoJson );
+    String createPolygon(@RequestBody PolygonRequest polygonRequest);
 
-    @GetMapping("images/search")
-    String serchImage(
+    @GetMapping("/image/search")
+    String serchImages(
             @RequestParam("start") long start,
             @RequestParam("end") long end,
-            @RequestParam("polyid") String polyid
+            @RequestParam("polyid") String polyId
             );
     @GetMapping("/ndvi/history")
     String getNdviHistory(
             @RequestParam("start") long start,
             @RequestParam("end") long end,
-            @RequestParam("polyId") String polyId
+            @RequestParam("polyid") String polyId
     );
 }

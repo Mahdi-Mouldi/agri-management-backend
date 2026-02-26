@@ -2,8 +2,11 @@ package com.agri.agrimanager.feign;
 
 import feign.Logger;
 import feign.Retryer;
+
+import feign.jackson.JacksonEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import feign.codec.Encoder; // ← ajoute ça
 
 @Configuration
 public class FeignConfig {
@@ -18,6 +21,10 @@ public class FeignConfig {
 
     @Bean
     Logger.Level feignLoggerLevel() {
-        return Logger.Level.BASIC;
+        return Logger.Level.FULL;
+    }
+    @Bean
+    public Encoder feignEncoder() {
+        return new JacksonEncoder(); // ← force Jackson pour sérialiser correctement
     }
 }

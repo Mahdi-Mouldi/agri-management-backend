@@ -1,5 +1,6 @@
 package com.agri.agrimanager.service;
 
+import com.agri.agrimanager.dto.PolygonRequest;
 import com.agri.agrimanager.entity.NdviImage;
 import com.agri.agrimanager.entity.Parcelle;
 import com.agri.agrimanager.feign.AgromonitoringClient;
@@ -7,15 +8,18 @@ import com.agri.agrimanager.repository.NdviRepository;
 import com.agri.agrimanager.repository.ParcelleRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,35 +31,49 @@ public class NdviService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String createPolygon(Long parcelleId) throws  Exception {
-        Parcelle parcelle=parcelleRepository.findById(parcelleId)
-                .orElseThrow(()-> new Exception("Parcelle id not found"));
-        // 1) Si déjà synchronisée, on retourne directement l'id externe
+    public String createPolygon(Long parcelleId) throws Exception {
 
-        if(parcelle.getAgroPolygonId()!=null && !parcelle.getAgroPolygonId().isEmpty()){
+
+        Parcelle parcelle = parcelleRepository.findById(parcelleId)
+                .orElseThrow(() -> new Exception("Parcelle id not found"));
+
+        // 1) Si déjà synchronisée, on retourne directement l'id externe
+        if (parcelle.getAgroPolygonId() != null && !parcelle.getAgroPolygonId().isEmpty()) {
             return parcelle.getAgroPolygonId();
         }
 
-        // 2) Construire le body attendu par /polygons : name + geo_
-        String requestBody = String.format(
-                "{\"geo_json\":%s}",
-                parcelle.getGeometryJson()
-        );//preparer les donner necessaire pour l'api de la sattelite
-        // 3) Appel API Agromonitoring (POST /polygons) -> réponse JSON contenant "id"
-        String response = agromonitoringClient.createPolygon(requestBody);
-        // 4) Extraire l'id du polygon depuis la réponse JSON ("id") [web:28]
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode geometryNode = mapper.readTree(parcelle.getGeometryJson());
 
-        ObjectMapper mapper = new  ObjectMapper();
+// Wrapper Feature complet
+        ObjectNode geoJson = mapper.createObjectNode();
+        geoJson.put("type", "Feature");
+        geoJson.putObject("properties");
+        geoJson.set("geometry", geometryNode);
+
+// JsonNode directement dans le DTO
+        PolygonRequest polygonRequest = new PolygonRequest(
+                parcelle.getName(),
+                geoJson  // ← JsonNode maintenant
+        );
+
+        // 4) Appel API Agromonitoring (POST /polygons) -> réponse JSON contenant "id"
+        String response = agromonitoringClient.createPolygon(polygonRequest);
+
+        // 5) Extraire l'id du polygon depuis la réponse JSON
         JsonNode node = mapper.readTree(response);
         String polygonId = node.get("id").asText();
 
-        // 5) Sauvegarder dans la parcelle pour réutiliser plus tard (polyid pour images/ndvi)
-
+        // 6) Sauvegarder dans la parcelle pour réutiliser plus tard
         parcelle.setAgroPolygonId(polygonId);
         parcelleRepository.save(parcelle);
+
+
+
         return polygonId;
 
     }
+
     public String searchNdviImages(Long parcelleId, LocalDate startDate, LocalDate endDate) throws Exception {
 
         if (startDate == null || endDate == null) {
@@ -73,7 +91,7 @@ public class NdviService {
         long end = endDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC);
 
         // 3) Appeler /image/search (l'appid est ajouté par ton interceptor)
-        return agromonitoringClient.serchImage(start, end, polyId);
+        return agromonitoringClient.serchImages(start, end, polyId);
     }
     public String searchNdviHistory(Long parcelleId, LocalDate startDate, LocalDate endDate) throws Exception {
         if (startDate == null || endDate == null) {
@@ -155,5 +173,13 @@ public class NdviService {
     }
 
     // ... tes méthodes existantes: createPolygon, searchNdviImages, searchNdviHistory
+    public Optional<NdviImage> getNdviImageById(Long id){
+        return ndviRepository.getNdviImageById(id);
+
+
+    }
+    public void deleteNdviImageByParcelleId(Long parcelleId){
+        ndviRepository.deleteNdviImageByParcelleId(parcelleId);
+    }
 }
 
