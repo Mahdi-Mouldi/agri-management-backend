@@ -1,50 +1,48 @@
-package com.agri.agrimanager.entity;
+    package com.agri.agrimanager.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+    import jakarta.persistence.*;
+    import lombok.AllArgsConstructor;
+    import lombok.Builder;
+    import lombok.Data;
+    import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+    import java.time.LocalDate;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
-@Builder
-public class WeatherData {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Entity
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    @Builder
+    public class WeatherData {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "parcelle_id")
-    private Parcelle parcelle;
+        @ManyToOne
+        @JoinColumn(name = "parcelle_id")
+        private Parcelle parcelle;
 
-    private LocalDate date;
+        private LocalDate date;
 
-    // Température
-    private Double temperatureMax; // en °C
-    private Double temperatureMin; // en °C
-    private Double temperatureMean;
+        // Température
+        private Double temperatureMax; // en °C
+        private Double temperatureMin; // en °C
+        private Double temperatureMean;
 
-    // Précipitations
-    private Double precipitation; // en mm
-    private Double rainSum;
+        // Précipitations
+        private Double precipitation; // en mm
+        private Double rainSum;
 
-    //Vent
-    private double windSpeedMax; // en km/h
-    private double windSpeedMean;
+        //Vent
+        private double windSpeedMax; // en km/h
 
-    // Humidité
-    private Double humidityMax; // en %
-    private Double humidityMin; // en %
+        // Humidité
 
-    //Sol
-    private Double soilTemperature; // en °C
-    private Double soilMoisture; // en %
-    //Ensoleillement
-    private Double sunshineDuration; // en heures
-    private Double uvIndex; // indice UV
-}
+
+        //Sol
+        private Double soilTemperature; // en °C
+        private Double soilMoisture; // en %
+        //Ensoleillement
+        private Double sunshineDuration; // en heures
+        private Double uvIndex; // indice UV
+    }
