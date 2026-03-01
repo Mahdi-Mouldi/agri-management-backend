@@ -23,11 +23,7 @@ public class WeatherMapper {
                     .precipitation(weatherData.getPrecipitation())
                     .rainSum(weatherData.getRainSum())
                     .windSpeedMax(weatherData.getWindSpeedMax())
-                    .windSpeedMean(weatherData.getWindSpeedMean())
-                  .humidityMax(weatherData.getHumidityMax())
-                    .humidityMin(weatherData.getHumidityMin())
-                    .soilTemperature(weatherData.getSoilTemperature())
-                    .soilMoisture(weatherData.getSoilMoisture())
+
                     .sunshineDuration(weatherData.getSunshineDuration())
                     .uvIndex(weatherData.getUvIndex())
                     .build();

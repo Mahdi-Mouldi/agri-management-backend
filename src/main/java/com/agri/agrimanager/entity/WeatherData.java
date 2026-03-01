@@ -18,31 +18,37 @@
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
-        @ManyToOne
-        @JoinColumn(name = "parcelle_id")
-        private Parcelle parcelle;
-
+        @Column(name = "date", nullable = false)
         private LocalDate date;
 
-        // Température
-        private Double temperatureMax; // en °C
-        private Double temperatureMin; // en °C
+        @ManyToOne
+        @JoinColumn(name = "parcelle_id", nullable = false)
+        private Parcelle parcelle;
+
+        @Column(name = "temperature_max")
+        private Double temperatureMax;
+
+        @Column(name = "temperature_min")
+        private Double temperatureMin;
+
+        @Column(name = "temperature_mean")
         private Double temperatureMean;
 
-        // Précipitations
-        private Double precipitation; // en mm
+        @Column(name = "precipitation")
+        private Double precipitation;
+
+        @Column(name = "rain_sum")
         private Double rainSum;
 
-        //Vent
-        private double windSpeedMax; // en km/h
+        @Column(name = "wind_speed_max")
+        private Double windSpeedMax;
 
-        // Humidité
+        @Column(name = "wind_speed_mean") // ← colonne qui causait le problème !
+        private Double windSpeedMean;
 
+        @Column(name = "sunshine_duration")
+        private Double sunshineDuration;
 
-        //Sol
-        private Double soilTemperature; // en °C
-        private Double soilMoisture; // en %
-        //Ensoleillement
-        private Double sunshineDuration; // en heures
-        private Double uvIndex; // indice UV
+        @Column(name = "uv_index")
+        private Double uvIndex;
     }

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import feign.codec.Encoder; // ← ajoute ça
 
-@Configuration
 public class FeignConfig {
     @Bean
     public AgromonitoringInterceptor agromonitoringInterceptor() {

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,18 +47,19 @@ public class WeatherService {
         double[] centroid = extractLatitudeLongitude(parcelle.getGeometryJson());
         double latitude = centroid[0];
         double longitude = centroid[1];
-        
+
         String response = weatherClient.getWeatherForecast(
                 latitude,
                 longitude,
                 "temperature_2m_max,temperature_2m_min,temperature_2m_mean," +
-                        "precipitation_sum,rain_sum,wind_speed_10m_max," +
-                        "soil_temperature_0cm,soil_moisture_0_to_7cm," +
+                        "precipitation_sum,rain_sum," +
+                        "wind_speed_10m_max,wind_speed_10m_mean," + // ← ajouter !
                         "sunshine_duration,uv_index_max",
                 "Africa/Tunis",
                 LocalDate.now().toString(),
                 LocalDate.now().plusDays(7).toString()
         );
+
         JsonNode json = objectMapper.readTree(response);
         JsonNode daily = json.path("daily");
         WeatherData weatherData = WeatherData.builder()
@@ -69,11 +71,17 @@ public class WeatherService {
                 .precipitation(daily.path("precipitation_sum").get(0).asDouble())
                 .rainSum(daily.path("rain_sum").get(0).asDouble())
                 .windSpeedMax(daily.path("wind_speed_10m_max").get(0).asDouble())
-                .soilTemperature(daily.path("soil_temperature_0cm").get(0).asDouble())
-                .soilMoisture(daily.path("soil_moisture_0_to_7cm").get(0).asDouble())
+                .windSpeedMean(daily.path("wind_speed_10m_mean").get(0).asDouble())
                 .sunshineDuration(daily.path("sunshine_duration").get(0).asDouble())
                 .uvIndex(daily.path("uv_index_max").get(0).asDouble())
+                // ← soilTemperature et soilMoisture supprimés !
                 .build();
         return weatherRepository.save(weatherData);
+    }
+    public List<WeatherData> getWeatherHistoryByParcelle(Long parcelleId){
+        return weatherRepository.findByParcelleId(parcelleId);
+    }
+    public void deleteWeather(Long id){
+        weatherRepository.deleteById(id);
     }
 }
