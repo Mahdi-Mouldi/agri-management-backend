@@ -17,4 +17,7 @@ public class ParcelleDTO {
     private SyncStatus syncStatus;
     private Long farmerId;       // pour associer la parcelle à un Farmer
     private Long fermeId;
+    private String culture;
+    private String variete;
+    private Double superficie;
 }

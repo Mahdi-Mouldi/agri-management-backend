@@ -33,6 +33,9 @@ public class ParcelleService {
         existParcelle.setName(updatedParcelle.getName());
         existParcelle.setGeometryJson(updatedParcelle.getGeometryJson());
         existParcelle.setSyncStatus(updatedParcelle.getSyncStatus());
+        existParcelle.setCulture(updatedParcelle.getCulture());
+        existParcelle.setVariete(updatedParcelle.getVariete());
+        existParcelle.setSuperficie(updatedParcelle.getSuperficie());
         return parcelleRepository.save(existParcelle);
     }
     public List<Parcelle> getParcellesByFarmerId(Long farmerId) {
