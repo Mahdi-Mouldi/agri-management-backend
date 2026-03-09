@@ -19,6 +19,10 @@ public class ParcelleMapper {
                 .syncStatus(parcelle.getSyncStatus())
                 .farmerId(parcelle.getFarmer() != null ? parcelle.getFarmer().getId() : null)
                 .fermeId(parcelle.getFerme() != null ? parcelle.getFerme().getId() : null)
+                .culture(parcelle.getCulture())
+                .variete(parcelle.getVariete())
+                .superficie(parcelle.getSuperficie())
+
                 .build();
     }
 
@@ -32,6 +36,9 @@ public class ParcelleMapper {
                 .syncStatus(dto.getSyncStatus())
                 .farmer(farmer)
                 .ferme(ferme)
+                .culture(dto.getCulture())
+                .variete(dto.getVariete())
+                .superficie(dto.getSuperficie())
                 .build();
     }
 }

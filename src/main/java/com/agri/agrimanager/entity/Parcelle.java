@@ -1,5 +1,6 @@
 package com.agri.agrimanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -41,6 +43,18 @@ public class Parcelle {
     @JoinColumn(name = "ferme_id")
 
     private Ferme ferme;
+
+    private String culture;
+    private String variete;
+    private Double superficie;
+
+    @OneToMany(mappedBy = "parcelle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("parcelle")
+    private List<NdviImage> ndviImages;
+
+    @OneToMany(mappedBy = "parcelle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("parcelle")
+    private List<WeatherData> weatherData;
 
     @PrePersist
     protected void onCreate() {
