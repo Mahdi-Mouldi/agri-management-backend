@@ -1,5 +1,6 @@
 package com.agri.agrimanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,10 @@ public class NdviImage {
     private long id;
     @ManyToOne
     @JoinColumn(name ="parcelle_id", nullable=false)
+    @JsonIgnoreProperties({
+            "ndviImages", "weatherData",
+            "farmer", "ferme"
+    })  // ← ajouter
     private Parcelle parcelle;
     // La parcelle agricole à laquelle cette image NDVI correspond
     @Column(nullable = false)

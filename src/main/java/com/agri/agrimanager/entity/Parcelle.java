@@ -35,12 +35,18 @@ public class Parcelle {
     private SyncStatus syncStatus;
 
     @ManyToOne
+    @JsonIgnoreProperties({
+            "parcelles", "fermes"
+    })  // ← ajouter
     @JoinColumn(name = "farmer_id")
 
     private Farmer farmer;
 
     @ManyToOne
     @JoinColumn(name = "ferme_id")
+    @JsonIgnoreProperties({
+            "parcelles"
+    })  // ← ajouter
 
     private Ferme ferme;
 

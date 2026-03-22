@@ -6,6 +6,7 @@ import com.agri.agrimanager.entity.Parcelle;
 import com.agri.agrimanager.feign.AgromonitoringClient;
 import com.agri.agrimanager.repository.NdviRepository;
 import com.agri.agrimanager.repository.ParcelleRepository;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@JsonIgnoreProperties("parcelle")  // ← important !                                                                                           erties("parcelle")
 public class NdviService {
     private final NdviRepository ndviRepository;
     private final ParcelleRepository parcelleRepository;
