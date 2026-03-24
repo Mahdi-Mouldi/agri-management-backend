@@ -81,7 +81,8 @@ public class WeatherService {
     public List<WeatherData> getWeatherHistoryByParcelle(Long parcelleId){
         return weatherRepository.findByParcelleId(parcelleId);
     }
-    public void deleteWeather(Long id){
+    public void deleteWeather(
+            Long id){
         weatherRepository.deleteById(id);
     }
 }
