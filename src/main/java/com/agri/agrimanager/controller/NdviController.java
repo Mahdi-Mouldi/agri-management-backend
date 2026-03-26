@@ -4,6 +4,7 @@ import com.agri.agrimanager.entity.NdviImage;
 import com.agri.agrimanager.service.NdviService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @CrossOrigin
 public class NdviController {
     private final NdviService ndviService;
+
 
     // 1) Créer polygon côté Agromonitoring
     // POST /api/ndvi/polygon/{parcelleId}
@@ -99,8 +101,8 @@ public class NdviController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @DeleteMapping("/parcelle/{parcelleId}")
 
+    @DeleteMapping("/parcelle/{parcelleId}")
     public void deleteImageByParcelle(@PathVariable Long parcelleId){
         ndviService.deleteNdviImageByParcelleId(parcelleId);
     }

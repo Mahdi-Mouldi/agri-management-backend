@@ -86,7 +86,7 @@ public class ParcelleService {
     }
 
     public Parcelle createParcelle(Parcelle parcelle) {
-        if(parcelle.getGeometryJson() != null){
+        if(parcelle.getGeometryJson() != null && !parcelle.getGeometryJson().isBlank()){
             validateParcelleLocation(parcelle);
         }
         return parcelleRepository.save(parcelle);
@@ -105,7 +105,7 @@ public class ParcelleService {
 
     public Parcelle updateParcelle(Long id, Parcelle updatedParcelle){
         Parcelle existParcelle = getParcelleById(id);
-        if(updatedParcelle.getGeometryJson() != null){
+        if(updatedParcelle.getGeometryJson() != null && !updatedParcelle.getGeometryJson().isBlank()){
             validateParcelleLocation(updatedParcelle);
         }
         existParcelle.setName(updatedParcelle.getName());
