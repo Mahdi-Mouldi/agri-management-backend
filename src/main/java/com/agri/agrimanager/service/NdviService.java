@@ -180,6 +180,9 @@ public class NdviService {
 
 
     }
+    public List<NdviImage> getNdviImageByParcelle(Long parcelleId){
+        return ndviRepository.findByParcelleId(parcelleId);
+    }
     public void deleteNdviImageByParcelleId(Long parcelleId){
         ndviRepository.deleteNdviImageByParcelleId(parcelleId);
     }

@@ -85,6 +85,10 @@ public class NdviController {
             return ResponseEntity.internalServerError().build();
         }
     }
+    @GetMapping("/parcelle/{parcelleId}")
+    public ResponseEntity<List<NdviImage>> getNdviByParcelle(@PathVariable Long parcelleId) {
+        return ResponseEntity.ok(ndviService.getNdviImageByParcelle(parcelleId));
+    }
 // ─────────────────────────────────────────────────────
     // 5) Récupérer une image NDVI par son ID
     // GET /api/ndvi/image/{id}
