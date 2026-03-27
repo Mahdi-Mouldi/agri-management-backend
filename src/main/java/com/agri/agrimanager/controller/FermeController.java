@@ -57,7 +57,7 @@ public class FermeController {
     public FermeDTO updateFerme(@PathVariable Long id,
                                       @RequestBody FermeDTO fermeDTO) {
 
-        Farmer farmer = farmerService.getFarmerById(fermeDTO.getId());
+        Farmer farmer = farmerService.getFarmerById(fermeDTO.getFarmer_id());
 
         Ferme ferme = FermeMapper.toEntity(fermeDTO, farmer);
 

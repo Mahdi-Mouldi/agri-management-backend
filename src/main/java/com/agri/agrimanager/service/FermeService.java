@@ -34,6 +34,7 @@ public class FermeService {
         existFerme.setFerme_name(updatedFerme.getFerme_name());
         existFerme.setFerme_address(updatedFerme.getFerme_address());
         existFerme.setSuperficieTotale(updatedFerme.getSuperficieTotale());
+        existFerme.setGeometryJson(updatedFerme.getGeometryJson());
         existFerme.setLatitude(updatedFerme.getLatitude());
         existFerme.setLongitude(updatedFerme.getLongitude());
         existFerme.setDescription(updatedFerme.getDescription());

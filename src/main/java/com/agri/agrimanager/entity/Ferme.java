@@ -22,6 +22,8 @@ public class Ferme {
     private String ferme_name;
     private String ferme_address;
     private Double superficieTotale;
+    @Column(columnDefinition = "TEXT")
+    private String geometryJson;
     private Double latitude;
     private Double longitude;
     private String description;

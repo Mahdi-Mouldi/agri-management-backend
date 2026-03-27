@@ -14,6 +14,7 @@ public class FermeDTO {
     private String ferme_name;
     private String ferme_address;
     private Double superficieTotale;
+    private String geometryJson;
     private Double latitude;
     private Double longitude;
     private String description;
