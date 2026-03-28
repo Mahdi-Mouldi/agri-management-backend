@@ -26,7 +26,7 @@ public class FermeService {
         return fermeRepository.findByFarmerAgentUsername(username);
     }
     public Ferme getFermeById(Long id) {
-        return fermeRepository.findById(id)
+        return fermeRepository.findById(id)s
                 .orElseThrow(() -> new RuntimeException("Ferme not found with id: " + id));
     }
     public Ferme updateFerme(Long id, Ferme updatedFerme){
