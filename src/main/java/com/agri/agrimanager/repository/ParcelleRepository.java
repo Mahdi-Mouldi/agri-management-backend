@@ -8,7 +8,7 @@ import java.util.List;
 public interface ParcelleRepository extends JpaRepository<Parcelle, Long> {
     List<Parcelle> findByFarmerId(Long farmerId);
     List<Parcelle> findByFermeId(Long fermeId);
-    List<Parcelle> findByFarmerAgentUsername(String username);
+    List<Parcelle> findByFarmerAgentEmail(String email);
 
 
 }

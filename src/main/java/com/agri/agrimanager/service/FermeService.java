@@ -22,11 +22,11 @@ public class FermeService {
         return fermeRepository.findByFarmerId(farmerId);
     }
     public List<Ferme> getAllFermes() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return fermeRepository.findByFarmerAgentUsername(username);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return fermeRepository.findByFarmerAgentEmail(email);
     }
     public Ferme getFermeById(Long id) {
-        return fermeRepository.findById(id)s
+        return fermeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ferme not found with id: " + id));
     }
     public Ferme updateFerme(Long id, Ferme updatedFerme){

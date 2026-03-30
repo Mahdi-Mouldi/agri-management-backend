@@ -52,9 +52,9 @@ public class ParcelleService {
     }
 
     public List<Parcelle> getAllParcelle() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return parcelleRepository.findByFarmerAgentUsername(username);
+        return parcelleRepository.findByFarmerAgentEmail(email);
     }
 
     public Parcelle updateParcelle(Long id, Parcelle updatedParcelle){

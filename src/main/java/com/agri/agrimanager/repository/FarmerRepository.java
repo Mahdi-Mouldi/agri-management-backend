@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FarmerRepository extends JpaRepository<Farmer, Long> {
-    List<Farmer> findByAgentUsername(String username);
+    List<Farmer> findByAgentEmail(String email);
 }

@@ -20,8 +20,8 @@ public class FarmerService  {
 // puis cherche cet agent dans la base de données.
 // Si aucun agent n'est trouvé avec ce username, lance une exception.
     public Farmer createFarmer(Farmer farmer){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName(); //njib lusername mte3 luser li aaml login
-        AppUser agent = appUserRepository.findByUsername(username)
+        String email = SecurityContextHolder.getContext().getAuthentication().getName(); //njib lusername mte3 luser li aaml login
+        AppUser agent = appUserRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
         farmer.setAgent(agent);
         return farmerRepository.save(farmer);
@@ -32,8 +32,8 @@ public class FarmerService  {
               .orElseThrow(() -> new RuntimeException("Farmer not found with id: " + id));
     }
     public List<Farmer> getAllFarmer(){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return farmerRepository.findByAgentUsername(username);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return farmerRepository.findByAgentEmail(email);
     }
     public Farmer updateFarmer(Long id, Farmer updatedFarmer){
         Farmer existFarmer = getFarmerById(id);

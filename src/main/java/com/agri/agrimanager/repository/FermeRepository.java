@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FermeRepository extends JpaRepository<Ferme, Long> {
     List<Ferme> findByFarmerId(Long farmerId);
-    List<Ferme> findByFarmerAgentUsername(String username);
+    List<Ferme> findByFarmerAgentEmail(String email);
 
 
 }
