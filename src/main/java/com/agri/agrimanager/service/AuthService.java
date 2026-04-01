@@ -73,12 +73,14 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Invalid verification token"));
         if(verificationToken.getExpiredDate().isBefore(LocalDateTime.now())){
             throw new RuntimeException("Verification token expired");
+        }
+        AppUser user = verificationToken.getUser();
+        user.setEnabled(true);
+        appUserRepository.save(user);
+        verificationTokenRepository.delete(verificationToken);
+        return "Email vérifié avec succès, vous pouvez maintenant vous connecter";
     }
-    AppUser user = verificationToken.getUser();
-    user.setEnabled(true);
-    appUserRepository.save(user);
 
-    return "Email vérifié avec succès, vous pouvez maintenant vous connecter";
-    }
+
 
 }

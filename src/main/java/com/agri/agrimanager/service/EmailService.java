@@ -13,7 +13,7 @@ public class EmailService {
 
     public void sendVerificationMail(String toEmail, String token){
         String subject = "Vérification de votre adresse email";
-        String verificationUrl =    "http://localhost:8080/auth/verify?token=" + token;
+        String verificationUrl = "http://localhost:4200/verify-email?token=" + token;
         String body = "Bonjour,\n\n"
                 + "Cliquez sur le lien suivant pour vérifier votre email :\n"
                 + verificationUrl
