@@ -30,12 +30,12 @@ public class WeatherDTO {
     private Double windSpeedMean;
 
     // Humidité
-    private Double humidityMax;
-    private Double humidityMin;
-
-    // Sol
-    private Double soilTemperature;
-    private Double soilMoisture;
+//    private Double humidityMax;
+//    private Double humidityMin;
+//
+//    // Sol
+//    private Double soilTemperature;
+//    private Double soilMoisture;
 
     // Ensoleillement
     private Double sunshineDuration;

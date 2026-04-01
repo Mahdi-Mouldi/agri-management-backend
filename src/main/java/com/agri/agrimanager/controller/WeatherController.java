@@ -1,5 +1,6 @@
 package com.agri.agrimanager.controller;
 
+import com.agri.agrimanager.dto.WeatherDTO;
 import com.agri.agrimanager.entity.WeatherData;
 import com.agri.agrimanager.service.WeatherService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,11 +19,11 @@ public class WeatherController {
     private final WeatherService weatherService;
     
     @GetMapping("/parcelle/{parcelleId}")
-    public WeatherData getWeatherByParcelle(@PathVariable Long parcelleId) throws JsonProcessingException {
+    public WeatherDTO getWeatherByParcelle(@PathVariable Long parcelleId) throws JsonProcessingException {
         return weatherService.getWeatherForecast(parcelleId);
     }
     @GetMapping("/history/{parcelleId}")
-    public List<WeatherData> getWeatherHistoryByParcelle(@PathVariable Long parcelleId){
+    public List<WeatherDTO> getWeatherHistoryByParcelle(@PathVariable Long parcelleId){
         return weatherService.getWeatherHistoryByParcelle(parcelleId);
     }
     @DeleteMapping("/{id}")

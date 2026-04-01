@@ -1,8 +1,10 @@
 package com.agri.agrimanager.service;
 
+import com.agri.agrimanager.dto.WeatherDTO;
 import com.agri.agrimanager.entity.Parcelle;
 import com.agri.agrimanager.entity.WeatherData;
 import com.agri.agrimanager.feign.WeatherClient;
+import com.agri.agrimanager.mapper.WeatherMapper;
 import com.agri.agrimanager.repository.ParcelleRepository;
 import com.agri.agrimanager.repository.WeatherRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +24,7 @@ public class WeatherService {
     private final ParcelleRepository parcelleRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WeatherMapper weatherMapper;
 
     public double[] extractLatitudeLongitude(String geoJson){
         try{
@@ -42,7 +45,7 @@ public class WeatherService {
             throw new RuntimeException("Erreur extraction centroïde GeoJSON", e);
         }
     }
-    public WeatherData getWeatherForecast(Long parcelleId) throws JsonProcessingException {
+    public WeatherDTO getWeatherForecast(Long parcelleId) throws JsonProcessingException {
         Parcelle parcelle = parcelleRepository.findById(parcelleId).orElse(null);
         double[] centroid = extractLatitudeLongitude(parcelle.getGeometryJson());
         double latitude = centroid[0];
@@ -76,10 +79,14 @@ public class WeatherService {
                 .uvIndex(daily.path("uv_index_max").get(0).asDouble())
                 // ← soilTemperature et soilMoisture supprimés !
                 .build();
-        return weatherRepository.save(weatherData);
+        WeatherData savedWeather = weatherRepository.save(weatherData);
+        return weatherMapper.toDTO(savedWeather);
     }
-    public List<WeatherData> getWeatherHistoryByParcelle(Long parcelleId){
-        return weatherRepository.findByParcelleId(parcelleId);
+    public List<WeatherDTO> getWeatherHistoryByParcelle(Long parcelleId){
+        return weatherRepository.findByParcelleId(parcelleId)
+                .stream()
+                .map(weatherMapper::toDTO)
+                .toList();
     }
     public void deleteWeather(
             Long id){
