@@ -2,6 +2,7 @@ package com.agri.agrimanager.service;
 
 import com.agri.agrimanager.entity.AppUser;
 import com.agri.agrimanager.repository.AppUserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -33,8 +35,11 @@ public class AppUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                Collections.emptyList()
+                List.of(new SimpleGrantedAuthority("ROLE_" + appUser.getRole().name()))
+
 
         );
     }
 }
+//lfile hedha ki taaml login spring yyaayt lhedha service besh yjiblou luser me db spring y9aren lmdp lrole w
+//yattih lacces

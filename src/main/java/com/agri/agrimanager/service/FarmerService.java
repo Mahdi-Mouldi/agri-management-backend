@@ -2,6 +2,7 @@ package com.agri.agrimanager.service;
 
 import com.agri.agrimanager.entity.AppUser;
 import com.agri.agrimanager.entity.Farmer;
+import com.agri.agrimanager.entity.Role;
 import com.agri.agrimanager.repository.AppUserRepository;
 import com.agri.agrimanager.repository.FarmerRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,38 +14,98 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FarmerService  {
+public class FarmerService {
+
     private final FarmerRepository farmerRepository;
     private final AppUserRepository appUserRepository;
-    // Récupère le nom d'utilisateur de l'agent actuellement connecté
-// puis cherche cet agent dans la base de données.
-// Si aucun agent n'est trouvé avec ce username, lance une exception.
-    public Farmer createFarmer(Farmer farmer){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName(); //njib lusername mte3 luser li aaml login
-        AppUser agent = appUserRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        farmer.setAgent(agent);
+
+    // 🔹 récupérer user connecté
+    private AppUser getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    // 🔹 créer farmer
+    public Farmer createFarmer(Farmer farmer) {
+        AppUser user = getCurrentUser();
+
+        if (user.getRole() == Role.AGENT_TERRAIN) {
+            farmer.setAgent(user);
+        }
+
         return farmerRepository.save(farmer);
     }
 
-    public Farmer getFarmerById(Long id){
-      return farmerRepository.findById(id)
-              .orElseThrow(() -> new RuntimeException("Farmer not found with id: " + id));
-    }
-    public List<Farmer> getAllFarmer(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return farmerRepository.findByAgentEmail(email);
-    }
-    public Farmer updateFarmer(Long id, Farmer updatedFarmer){
-        Farmer existFarmer = getFarmerById(id);
-        existFarmer.setName(updatedFarmer.getName());
-        existFarmer.setEmail(updatedFarmer.getEmail());
-        existFarmer.setPhoneNumber(updatedFarmer.getPhoneNumber());
-        return farmerRepository.save(existFarmer);
+    // 🔹 récupérer farmer par id (sécurisé)
+    public Farmer getFarmerById(Long id) {
+        AppUser user = getCurrentUser();
+
+        Farmer farmer = farmerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Farmer not found"));
+
+        if (user.getRole() == Role.ADMIN) {
+            return farmer;
+        }
+
+        if (user.getRole() == Role.AGENT_TERRAIN &&
+                farmer.getAgent() != null &&
+                farmer.getAgent().getEmail().equals(user.getEmail())) {
+            return farmer;
+        }
+
+        throw new RuntimeException("Access denied");
     }
 
-    public void deleteFarmer(Long id){
-        farmerRepository.deleteById(id);
+    // 🔹 récupérer tous les farmers
+    public List<Farmer> getAllFarmer() {
+        AppUser user = getCurrentUser();
+
+        if (user.getRole() == Role.ADMIN) {
+            return farmerRepository.findAll();
+        }
+
+        if (user.getRole() == Role.AGENT_TERRAIN) {
+            return farmerRepository.findByAgentEmail(user.getEmail());
+        }
+
+        return List.of(); // FARMER ou autre
+    }
+
+    // 🔹 update farmer
+    public Farmer updateFarmer(Long id, Farmer updatedFarmer) {
+        AppUser user = getCurrentUser();
+        Farmer farmer = getFarmerById(id);
+
+        if (user.getRole() == Role.ADMIN ||
+                (user.getRole() == Role.AGENT_TERRAIN &&
+                        farmer.getAgent() != null &&
+                        farmer.getAgent().getEmail().equals(user.getEmail()))) {
+
+            farmer.setName(updatedFarmer.getName());
+            farmer.setEmail(updatedFarmer.getEmail());
+            farmer.setPhoneNumber(updatedFarmer.getPhoneNumber());
+
+            return farmerRepository.save(farmer);
+        }
+
+        throw new RuntimeException("Access denied");
+    }
+
+    // 🔹 delete farmer
+    public void deleteFarmer(Long id) {
+        AppUser user = getCurrentUser();
+        Farmer farmer = getFarmerById(id);
+
+        if (user.getRole() == Role.ADMIN ||
+                (user.getRole() == Role.AGENT_TERRAIN &&
+                        farmer.getAgent() != null &&
+                        farmer.getAgent().getEmail().equals(user.getEmail()))) {
+
+            farmerRepository.deleteById(id);
+            return;
+        }
+
+        throw new RuntimeException("Access denied");
     }
 }
-

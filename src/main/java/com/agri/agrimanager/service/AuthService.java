@@ -4,6 +4,7 @@ import com.agri.agrimanager.dto.LoginRequest;
 import com.agri.agrimanager.dto.LoginResponse;
 import com.agri.agrimanager.dto.RegisterRequest;
 import com.agri.agrimanager.entity.AppUser;
+import com.agri.agrimanager.entity.Role;
 import com.agri.agrimanager.entity.VerificationToken;
 import com.agri.agrimanager.repository.AppUserRepository;
 import com.agri.agrimanager.repository.VerificationTokenRepository;
@@ -42,7 +43,7 @@ public class AuthService {
             throw new RuntimeException("Veuillez vérifier votre email avant de vous connecter");
         }
         String token = jwtUtil.generateToken(user.getEmail());
-        return new LoginResponse(user.getEmail(),token);
+        return new LoginResponse(user.getEmail(),token, user.getRole());
     }
     public void register(RegisterRequest request) {
         Optional<AppUser> existUser = appUserRepository.findByEmail(request.getEmail());
@@ -54,7 +55,7 @@ public class AuthService {
         user.setEmail(request.getEmail());
 
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-//        user.setRole(request.getRole());
+        user.setRole(Role.FARMER);
         user.setEnabled(false);
 
         AppUser savedUser =appUserRepository.save(user);

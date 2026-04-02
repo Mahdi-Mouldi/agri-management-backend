@@ -11,4 +11,13 @@ public interface ParcelleRepository extends JpaRepository<Parcelle, Long> {
     List<Parcelle> findByFarmerAgentEmail(String email);
 
 
+    List<Parcelle> findByFarmerEmail(String email);
+
+    List<Parcelle> findByFarmerIdAndFarmerAgentEmail(Long farmerId, String email);
+
+    List<Parcelle> findByFarmerEmailAndFarmerId(String email, Long farmerId);
+
+    List<Parcelle> findByFarmerAgentEmailAndFermeId(String email, Long fermeId);
+
+    List<Parcelle> findByFarmerEmailAndFermeId(String email, Long fermeId);
 }

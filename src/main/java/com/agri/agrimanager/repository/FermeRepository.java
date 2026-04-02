@@ -11,4 +11,9 @@ public interface FermeRepository extends JpaRepository<Ferme, Long> {
     List<Ferme> findByFarmerAgentEmail(String email);
 
 
+    List<Ferme> findByFarmerAgentEmailAndFarmerId(String email, Long farmerId);
+
+    List<Ferme> findByFarmerEmailAndFarmerId(String email, Long farmerId);
+
+    List<Ferme> findByFarmerEmail(String email);
 }

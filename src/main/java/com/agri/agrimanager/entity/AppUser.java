@@ -22,8 +22,8 @@ public class AppUser {
 
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private boolean enabled;
 
